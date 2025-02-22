@@ -15,7 +15,7 @@ export class Pacman extends gameObject {
     this.directionPacman =1; // 1 -> right, 2 -> up, 3 -> left, 4 -> down
     this.speedPacman = configGame.SPEED_PACMAN; //Image size
     this.scorePacman = 0;
-    this.pacmanlives=configGame.LIVES_PACMAN;
+    this.pacmanlives=3;
     //this.widthCanvasPacman = 128;
    // this.pacmanDiameter =32;
   }
@@ -78,8 +78,12 @@ export class Pacman extends gameObject {
     if (distancia < IMAGE_SIZE) {
       //mHE FOTUT nata amb una roca
       alert("Has xocat amb una roca, has perdut una vida");
+      // Restar una vida
       this.pacmanlives--;
+      // Tornar a posar pacman al punt de partida
       this.spawnPacman();
+
+
       } //End switch
     }
       //mHE FOTUT nata amb una roca

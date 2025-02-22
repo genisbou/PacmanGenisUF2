@@ -148,6 +148,7 @@ function draw() {
     text("Score: " + myPacman.scorePacman, 150, configGame.HEIGHT_CANVAS + 50);
 //   text("Score: " + myPacman.scorePacman, 150, HEIGHT_CANVAS + 50);
     text("Time: " + timer, 150, configGame.HEIGHT_CANVAS + 100);
+    text("Lives: " + myPacman.pacmanlives, 150, configGame.HEIGHT_CANVAS + 150);
     //Pintem pacman
     //myPacman.showObject(imgPacman);
     switch(myPacman.directionPacman){
