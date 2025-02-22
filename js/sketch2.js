@@ -234,7 +234,36 @@ function showError(){
 }
 
 function testFinishGame(){
- /*
+
+  const restartGame = () => {
+    arrFood.length = 0;
+    arrPowerUp.length = 0;
+    myPacman.scorePacman = 0;
+    startTimeGame = millis();
+    for (let filaActual = 0; filaActual < configGame.ROWS; filaActual++) {
+      for (let columnaActual = 0; columnaActual < configGame.COLUMNS; columnaActual++) {
+        if (configGame.map[filaActual][columnaActual] === 1) {
+          const roca = new gameObject(filaActual, columnaActual);
+          arrRocks.push(roca);
+        }
+        else if (configGame.map[filaActual][columnaActual] === 2) {
+          const food = new Food(filaActual, columnaActual);
+          arrFood.push(food);
+        }
+        else if (configGame.map[filaActual][columnaActual] === 3) {
+          myPacman = new Pacman(filaActual, columnaActual);
+        }
+        else if (configGame.map[filaActual][columnaActual] === 5) {
+          const powerUp = new Powup(filaActual, columnaActual);
+          arrPowerUp.push(powerUp);
+        }
+        else {
+          //Error objecte no defini
+
+        }
+      } // fi for columnes
+    } // fi for files
+  };
   if (arrFood.length === 0){
     //Fi del joc
     noLoop();
@@ -246,6 +275,7 @@ function testFinishGame(){
     }
     else {
       alert("Gracies per jugar");
+        remove();
     }
     loop();
   }/*
