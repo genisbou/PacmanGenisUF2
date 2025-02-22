@@ -24,6 +24,7 @@ let endTimeGame = 0;
 let numberErrorLoadedSounds = 0;
 let imgPowerUp;
 const arrPowerUp = [];
+let isPaused = false; // Variable per controlar si el joc està pausat
 
 function preload() {
   imgRock = loadImage("../media/roca.png", handleImage, handleError);
@@ -96,89 +97,110 @@ startTimeGame = millis();
 } // fi setup
 
 function draw() {
-  background(171, 248, 168);
-  // arrRocks.forEach((roca) => roca.showObject(imgRock));
-  //Pintem roques
-  for (let i = 0; i < arrRocks.length; i++) {
-    arrRocks[i].showObject(imgRock);
-  }
+  if (!isPaused) {
+    background(171, 248, 168);
+    // arrRocks.forEach((roca) => roca.showObject(imgRock));
+    //Pintem roques
+    for (let i = 0; i < arrRocks.length; i++) {
+      arrRocks[i].showObject(imgRock);
+    }
 
-  //Pintem powerups
-  for (let i = 0; i < arrPowerUp.length; i++) {
-    arrPowerUp[i].showObject(imgPowerUp);
-  }
+    //Pintem powerups
+    for (let i = 0; i < arrPowerUp.length; i++) {
+      arrPowerUp[i].showObject(imgPowerUp);
+    }
 
-  //Pintem food
-  for (let i = 0; i < arrFood.length; i++) {
-    arrFood[i].showObject(imgFood);
-  }
-  //comprovar colisions pacman amb roques
-  for (let i = 0; i < arrRocks.length; i++) {
-    myPacman.testCollideRock ( arrRocks[i]);
-  }
+    //Pintem food
+    for (let i = 0; i < arrFood.length; i++) {
+      arrFood[i].showObject(imgFood);
+    }
+    //comprovar colisions pacman amb roques
+    for (let i = 0; i < arrRocks.length; i++) {
+      myPacman.testCollideRock ( arrRocks[i]);
+    }
 
 //comprovar colisions pacman amb food
-  for (let i = 0; i < arrFood.length; i++) {
-    let resultTest = myPacman.testCollideFood(arrFood[i]);
-    if (resultTest) {
-      myPacman.scorePacman = myPacman.scorePacman + arrFood[i].pointsFood;
-      arrFood.splice(i, 1);
+    for (let i = 0; i < arrFood.length; i++) {
+      let resultTest = myPacman.testCollideFood(arrFood[i]);
+      if (resultTest) {
+        myPacman.scorePacman = myPacman.scorePacman + arrFood[i].pointsFood;
+        arrFood.splice(i, 1);
+      }
     }
-  }
-  //pINTEM ScoreBoard
+    //pINTEM ScoreBoard
 
-  //comprovar colisions pacman amb po
-  for (let i = 0; i < arrPowerUp.length; i++) {
-    let resultTest = myPacman.testCollidePowerup(arrPowerUp[i]);
+    //comprovar colisions pacman amb po
+    for (let i = 0; i < arrPowerUp.length; i++) {
+      let resultTest = myPacman.testCollidePowerup(arrPowerUp[i]);
 
-    if (resultTest) {
-      //Hem xocat amb una powerup i l'activem
-      if (arrPowerUp[i].enabledPowerup === false) {
-        arrPowerUp[i].enabledPowerup = true;
-        arrPowerUp[i].startTimePowerup = millis();
-      } //if enable powerup
-    } //if resultTest
-  } //for powerup
- // textFont(font);
-  textSize(20);
-  textAlign(CENTER, CENTER);
-  timer = parseInt( millis() - startTimeGame);
-  text("Score: " + myPacman.scorePacman, 150, configGame.HEIGHT_CANVAS + 50);
+      if (resultTest) {
+        //Hem xocat amb una powerup i l'activem
+        if (arrPowerUp[i].enabledPowerup === false) {
+          arrPowerUp[i].enabledPowerup = true;
+          arrPowerUp[i].startTimePowerup = millis();
+        } //if enable powerup
+      } //if resultTest
+    } //for powerup
+    // textFont(font);
+    textSize(20);
+    textAlign(CENTER, CENTER);
+    timer = parseInt( millis() - startTimeGame);
+    text("Score: " + myPacman.scorePacman, 150, configGame.HEIGHT_CANVAS + 50);
 //   text("Score: " + myPacman.scorePacman, 150, HEIGHT_CANVAS + 50);
-  text("Time: " + timer, 150, configGame.HEIGHT_CANVAS + 100);
-  //Pintem pacman
-  //myPacman.showObject(imgPacman);
-  switch(myPacman.directionPacman){
-    case 1: //Move right
-            myPacman.showObject(imgPacmanRight);
-            break;
-    case 2: //Move up
-            myPacman.showObject(imgPacmanUp);
-            break;
-    case 3: //Move left
-            myPacman.showObject(imgPacmanLeft);
-            break
-    case 4: //Move down
-            myPacman.showObject(imgPacmanDown);
-            break;
-    default : myPacman.showObject(imgPacman);
+    text("Time: " + timer, 150, configGame.HEIGHT_CANVAS + 100);
+    //Pintem pacman
+    //myPacman.showObject(imgPacman);
+    switch(myPacman.directionPacman){
+      case 1: //Move right
+        myPacman.showObject(imgPacmanRight);
+        break;
+      case 2: //Move up
+        myPacman.showObject(imgPacmanUp);
+        break;
+      case 3: //Move left
+        myPacman.showObject(imgPacmanLeft);
+        break
+      case 4: //Move down
+        myPacman.showObject(imgPacmanDown);
+        break;
+      default : myPacman.showObject(imgPacman);
 
-  }
+    }
 
-  if( wakaSound.isPlaying() === false) {
-    wakaSound.play();
+    if( wakaSound.isPlaying() === false) {
+      wakaSound.play();
+    }
+    else {
+      //wakaSound.play();
+    }
+    testFinishPowerup();
+    testFinishGame();
   }
-  else {
-    //wakaSound.play();
-  }
-  testFinishPowerup();
-  testFinishGame();
-
+    else {
+        //Pausa
+        wakaSound.pause();
+        textSize(32);
+        textAlign(CENTER, CENTER);
+        text("PAUSA", configGame.WIDTH_CANVAS / 2, configGame.HEIGHT_CANVAS / 2);
+        }
 
   // pacmanEnemy.showObject(imgPacman);
 } // fi draw
 
 function keyPressed() {
+  // Pausar el joc
+  if (key === 'P' || key === 'p') {
+    isPaused = !isPaused;
+    console.log(isPaused ? "Joc en pausa" : "Joc reprès");
+    return; // Evita processar altres tecles si s'ha pausat el joc
+  }
+
+  // Si el joc està en pausa, no fer res més
+  if (isPaused) {
+    return;
+  }
+
+  // Controls de moviment
   if (keyCode === RIGHT_ARROW) {
     console.log("Dreta");
     myPacman.moveRight();
@@ -186,13 +208,13 @@ function keyPressed() {
     console.log("Esquerra");
     myPacman.moveLeft();
   } else if (keyCode === UP_ARROW) {
+    console.log("Amunt");
     myPacman.moveUp();
   } else if (keyCode === DOWN_ARROW) {
+    console.log("Avall");
     myPacman.moveDown();
   } else {
-    console.log("Error, tecla no reconeguda");
-    let error = new ErrorPac(101, "Press a valid key");
-    error.toString();
+    console.error("Error, tecla no reconeguda");
   }
 }
 
