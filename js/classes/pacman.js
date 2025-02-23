@@ -126,10 +126,10 @@ testCollideFood(food) {
   // console.log( "Distancia entre pacman i roca: " + distancia);
 
   if (distancia < IMAGE_SIZE) {
-    console.log("Has agafat una food");
+    // console.log("Has agafat una food");
     return true;
   } else {
-    console.log("Food massa lluny");
+    // console.log("Food massa lluny");
     return false;
   }
 }
