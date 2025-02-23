@@ -82,7 +82,10 @@ export class Pacman extends gameObject {
       this.pacmanlives--;
       // Tornar a posar pacman al punt de partida
       this.spawnPacman();
-
+      if (this.pacmanlives === 0){
+        alert("Has perdut totes les vides, GAME OVER");
+        noLoop();
+      }
 
       } //End switch
     }
