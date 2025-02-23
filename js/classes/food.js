@@ -16,6 +16,10 @@ export class Food extends gameObject {
    */
   constructor(row, column) {
     super(row, column);
+
+    /**
+     * @type {number} pointsFood - Punts que dóna el menjar
+     */
     this.pointsFood = 10;
   }
 
