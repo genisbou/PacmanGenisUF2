@@ -324,7 +324,8 @@ function testFinishPowerup() {
 
   for (let i = 0; i < arrPowerUp.length; i++) {
     if (arrPowerUp[i].enabledPowerup === true) {
-      text ("PowerUp activat ⚡", 150, configGame.HEIGHT_CANVAS + 200);
+      text ("⚡PowerUp activat ", 150, configGame.HEIGHT_CANVAS + 200);
+      text("🚀Temps restant : " + (10 - Math.floor((millis() - arrPowerUp[i].startTimePowerup) / 1000)), 150, configGame.HEIGHT_CANVAS + 250);
       console.log("Powerup activat numero " + i);
       console.log("Powerup activat startTime " + arrPowerUp[i].startTimePowerup);
       console.log("Powerup activat enabled " + arrPowerUp[i].enabledPowerup);
