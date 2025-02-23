@@ -6,6 +6,7 @@ export class Food extends gameObject {
     super(row, column);
     this.pointsFood = 10;
   }
+
   toString() {
     console.log( `Food at row ${this.rowNumber}
     and column ${this.columnObjectNumber}
