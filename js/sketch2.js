@@ -99,20 +99,23 @@ startTimeGame = millis();
 function draw() {
   if (!isPaused) {
     background(171, 248, 168);
-     arrRocks.forEach((roca) => roca.showObject(imgRock));
-     arrFood.forEach((food) => food.showObject(imgFood));
-     arrPowerUp.forEach((powerUp) => powerUp.showObject(imgPowerUp));
+     //arrRocks.forEach((roca) => roca.showObject(imgRock));
 
-     arrRocks.forEach((roca) => myPacman.testCollideRock(roca));
       arrFood.forEach((food) => {
         if (myPacman.testCollideFood(food)) {
-          let index = arrFood.indexOf(food);
-          let PointsPowerUp = food.pointsFood * 10;
+          let PointsPowerUp = food.pointsFood ;
+         for (let i = 0; i < arrPowerUp.length; i++) {
+            if (arrPowerUp[i].enabledPowerup) {
+              PointsPowerUp = PointsPowerUp * 10;
+            }
+          }
           myPacman.scorePacman += PointsPowerUp;
-          arrFood.splice(index, 1);
+          arrFood.splice(arrFood.indexOf(food), 1);
         }
       });
 
+
+      testFinishPowerup();
 
     //Pintem roques
     for (let i = 0; i < arrRocks.length; i++) {
