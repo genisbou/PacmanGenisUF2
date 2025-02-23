@@ -146,22 +146,22 @@ function draw() {
         // }
       } //if resultTest
 
-      // Si el powerup està activat i el pacman no està xoquant amb ell
-      if (arrPowerUp[i].enabledPowerup === true ) {
+      // Si el powerup està activat
+      if (arrPowerUp[i].enabledPowerup) {
         // Incrementar score quan el pacman agafi una food
-        for (let j = 0; j < arrFood.length; j++) {
+        for (let j = arrFood.length - 1; j >= 0; j--) { // Iteració cap enrere
           if (myPacman.testCollideFood(arrFood[j])) {
-            myPacman.scorePacman = myPacman.scorePacman + arrFood[j].pointsFood;
+            myPacman.scorePacman += arrFood[j].pointsFood + 50; // Suma extra de 50 punts
+            arrFood.splice(j, 1); // Elimina correctament la food sense saltar-se elements
           }
         }
-
       }
 
     } //for powerup
     // textFont(font);
     textSize(20);
     textAlign(CENTER, CENTER);
-    timer = parseInt( millis() - startTimeGame);
+    timer = Math.floor((millis() - startTimeGame) / 1000);
     text("Score: " + myPacman.scorePacman, 150, configGame.HEIGHT_CANVAS + 50);
 //   text("Score: " + myPacman.scorePacman, 150, HEIGHT_CANVAS + 50);
     text("Time: " + timer, 150, configGame.HEIGHT_CANVAS + 100);
