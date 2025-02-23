@@ -99,7 +99,21 @@ startTimeGame = millis();
 function draw() {
   if (!isPaused) {
     background(171, 248, 168);
-    // arrRocks.forEach((roca) => roca.showObject(imgRock));
+     arrRocks.forEach((roca) => roca.showObject(imgRock));
+     arrFood.forEach((food) => food.showObject(imgFood));
+     arrPowerUp.forEach((powerUp) => powerUp.showObject(imgPowerUp));
+
+     arrRocks.forEach((roca) => myPacman.testCollideRock(roca));
+      arrFood.forEach((food) => {
+        if (myPacman.testCollideFood(food)) {
+          let index = arrFood.indexOf(food);
+          let PointsPowerUp = food.pointsFood * 10;
+          myPacman.scorePacman += PointsPowerUp;
+          arrFood.splice(index, 1);
+        }
+      });
+
+
     //Pintem roques
     for (let i = 0; i < arrRocks.length; i++) {
       arrRocks[i].showObject(imgRock);
@@ -129,35 +143,32 @@ function draw() {
     }
     //pINTEM ScoreBoard
 
-    //comprovar colisions pacman amb po
+    // Comprovar col·lisions Pacman amb PowerUp
     for (let i = 0; i < arrPowerUp.length; i++) {
       let resultTest = myPacman.testCollidePowerup(arrPowerUp[i]);
 
       if (resultTest) {
-        //Hem xocat amb una powerup i l'activem
-        if (arrPowerUp[i].enabledPowerup === false) {
+        // Activem el PowerUp si encara no està activat
+        if (!arrPowerUp[i].enabledPowerup) {
           arrPowerUp[i].enabledPowerup = true;
           arrPowerUp[i].startTimePowerup = millis();
-        } //if enable powerup
+          console.log("PowerUp activat!");
+        }
+      }
 
-
-        // if (arrPowerUp[i].enabledPowerup === true) {
-        //   myPacman.scorePacman = myPacman.scorePacman + PointsPowerup;
-        // }
-      } //if resultTest
-
-      // Si el powerup està activat
       if (arrPowerUp[i].enabledPowerup) {
-        // Incrementar score quan el pacman agafi una food
-        for (let j = arrFood.length - 1; j >= 0; j--) { // Iteració cap enrere
-          if (myPacman.testCollideFood(arrFood[j])) {
-            myPacman.scorePacman += arrFood[j].pointsFood + 50; // Suma extra de 50 punts
-            arrFood.splice(j, 1); // Elimina correctament la food sense saltar-se elements
+        for (let j = 0; j < arrFood.length; j++) {
+          let resultTest = myPacman.testCollideFood(arrFood[j]);
+          if (resultTest) {
+            myPacman.scorePacman += Poi;
+            arrFood.splice(j, 1);
+            console.log("Pacman ha menjat una food! Nova puntuació: " + myPacman.scorePacman);
           }
         }
       }
 
-    } //for powerup
+    }
+
     // textFont(font);
     textSize(20);
     textAlign(CENTER, CENTER);
