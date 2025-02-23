@@ -109,6 +109,7 @@ function draw() {
               PointsPowerUp = PointsPowerUp * 10;
             }
           }
+
           myPacman.scorePacman += PointsPowerUp;
           arrFood.splice(arrFood.indexOf(food), 1);
         }
@@ -323,6 +324,7 @@ function testFinishPowerup() {
 
   for (let i = 0; i < arrPowerUp.length; i++) {
     if (arrPowerUp[i].enabledPowerup === true) {
+      text ("PowerUp activat ⚡", 150, configGame.HEIGHT_CANVAS + 200);
       console.log("Powerup activat numero " + i);
       console.log("Powerup activat startTime " + arrPowerUp[i].startTimePowerup);
       console.log("Powerup activat enabled " + arrPowerUp[i].enabledPowerup);
