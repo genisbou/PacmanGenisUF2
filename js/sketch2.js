@@ -139,7 +139,24 @@ function draw() {
           arrPowerUp[i].enabledPowerup = true;
           arrPowerUp[i].startTimePowerup = millis();
         } //if enable powerup
+
+
+        // if (arrPowerUp[i].enabledPowerup === true) {
+        //   myPacman.scorePacman = myPacman.scorePacman + PointsPowerup;
+        // }
       } //if resultTest
+
+      // Si el powerup està activat i el pacman no està xoquant amb ell
+      if (arrPowerUp[i].enabledPowerup === true ) {
+        // Incrementar score quan el pacman agafi una food
+        for (let j = 0; j < arrFood.length; j++) {
+          if (myPacman.testCollideFood(arrFood[j])) {
+            myPacman.scorePacman = myPacman.scorePacman + arrFood[j].pointsFood;
+          }
+        }
+
+      }
+
     } //for powerup
     // textFont(font);
     textSize(20);
