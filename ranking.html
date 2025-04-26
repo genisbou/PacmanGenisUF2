@@ -1,0 +1,132 @@
+  <!doctype html>
+  <html class="no-js" lang="">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Instruccions</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="">
+
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:image:alt" content="">
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#fafafa">
+    <!-- Place favicon.ico in the root directory -->
+    <script src="js/libraries/p5.min.js" type="module"></script>
+    <script src="js/libraries/addons/p5.sound.js" type="module"></script>
+    <script src="js/sketch2.js" type="module"></script>
+    <style>
+
+
+    </style>
+  </head>
+  <!--header-->
+  <body>
+    <div class="topnav">
+        <a href="home.html">HOME</a>
+        <a href="index.html">START GAME</a>
+        <a href="stats.html">MY STATS</a>
+        <a href="data.html">MY DATA</a>
+        <a href="ranking.html">TOP RANKING</a>
+        <a href="help.html">HELP</a>
+        <!-- <a href="informacio.html">INFORMACIÓ</a>
+        <a href="credits.html">CRÈDITS</a> -->
+        <div class="w3-right">
+        <a href="logout.html">LOGOUT</a>
+    </div>
+    </div>
+
+    <div class="w3-container w3-left">
+       <h2>Top Ranking</h2>
+
+<label for="numPlayers">Quants jugadors vols veure?</label>
+<select id="numPlayers" class="w3-select w3-border" style="width:200px">
+  <option value="10">Top 10</option>
+  <option value="20">Top 20</option>
+  <option value="30" selected>Top 30</option>
+</select>
+
+<table class="w3-table-all w3-hoverable w3-margin-top">
+  <thead>
+    <tr>
+      <th onclick="ordenarPer('posicio')">Posició ⬍</th>
+      <th onclick="ordenarPer('name')">Nom ⬍</th>
+      <th onclick="ordenarPer('points')">Punts ⬍</th>
+    </tr>
+  </thead>
+  <tbody id="rankingTable">
+  </tbody>
+</table>
+
+<script>
+// Comprovar si està loguejat
+if (!localStorage.getItem('usuariConnectat')) {
+  window.location.href = 'login.html';
+}
+
+// Array de jugadors simulats
+const users = [];
+for (let i = 1; i <= 30; i++) {
+  users.push({
+    posicio: i,
+    name: 'Jugador' + i,
+    points: Math.floor(Math.random() * 10000)
+  });
+}
+
+function mostrarRanking(num) {
+  const table = document.getElementById('rankingTable');
+  table.innerHTML = '';
+
+  const seleccionats = users.slice(0, num);
+
+  seleccionats.forEach(user => {
+    table.innerHTML += `
+      <tr>
+        <td>${user.posicio}</td>
+        <td>${user.name}</td>
+        <td>${user.points}</td>
+      </tr>
+    `;
+  });
+}
+
+document.getElementById('numPlayers').addEventListener('change', function() {
+  mostrarRanking(this.value);
+});
+
+function ordenarPer(camp) {
+  users.sort((a, b) => {
+    if (camp === 'name') {
+      return a.name.localeCompare(b.name);
+    } else {
+      return a[camp] - b[camp];
+    }
+  });
+  mostrarRanking(document.getElementById('numPlayers').value);
+}
+
+// Inicial
+mostrarRanking(30);
+</script>
+    </div>
+
+    <!-- Add your site or application content here -->
+    <!--<div id="sketch-pacman"></div>-->
+    <!--<div id="error-holder"></div>-->
+    <!--<media src="/error.gif" alt="Error de carga">-->
+    <!-- <img src="media/pac.png" alt="pacman">-->
+
+  </body>
+
+  </html>
