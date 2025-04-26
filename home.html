@@ -1,38 +1,62 @@
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-  <meta charset="UTF-8">
-  <title>Home</title>
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-</head>
-<body class="w3-container w3-center" style="padding-top: 100px;">
+  <!doctype html>
+  <html class="no-js" lang="">
 
-<h1>Benvingut/da, <span id="userName"></span>!</h1>
-<p>Tria una opció del menú per començar a jugar o veure les teves dades.</p>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Instruccions</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="">
 
-<!--header-->
-<div class="topnav">
-  <a href="home.html">HOME</a>
-  <a href="index.html">START GAME</a>
-  <a href="stats.html">MY STATS</a>
-  <a href="data.html">MY DATA</a>
-  <a href="ranking.html">TOP RANKING</a>
-  <a href="help.html">HELP</a>
-  <!-- <a href="informacio.html">INFORMACIÓ</a>
-  <a href="credits.html">CRÈDITS</a> -->
-  <div class="w3-right">
-  <a href="logout.html">LOGOUT</a>
-  </div>
-</div>
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:image:alt" content="">
 
-<script>
-// Comprovar sessió
-if (!localStorage.getItem('usuariConnectat')) {
-  window.location.href = 'login.html';
-} else {
-  document.getElementById('userName').textContent = localStorage.getItem('usuariConnectat');
-}
-</script>
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icon.png">
 
-</body>
-</html>
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#fafafa">
+    <!-- Place favicon.ico in the root directory -->
+    <script src="js/libraries/p5.min.js" type="module"></script>
+    <script src="js/libraries/addons/p5.sound.js" type="module"></script>
+    <script src="js/sketch2.js" type="module"></script>
+    <style>
+
+
+    </style>
+  </head>
+  <!--header-->
+  <body>
+    <div class="topnav">
+        <a href="home.html">HOME</a>
+        <a href="index.html">START GAME</a>
+        <a href="stats.html">MY STATS</a>
+        <a href="data.html">MY DATA</a>
+        <a href="ranking.html">TOP RANKING</a>
+        <a href="help.html">HELP</a>
+        <!-- <a href="informacio.html">INFORMACIÓ</a>
+        <a href="credits.html">CRÈDITS</a> -->
+        <div class="w3-right">
+        <a href="logout.html">LOGOUT</a>
+    </div>
+    </div>
+
+    <div class="w3-container w3-left">
+       <h1>Benvingut/da!</h1>
+        <p>Tria una opció del menú per començar a jugar o veure les teves dades.</p>
+    </div>
+
+    <!-- Add your site or application content here -->
+    <!--<div id="sketch-pacman"></div>-->
+    <!--<div id="error-holder"></div>-->
+    <!--<media src="/error.gif" alt="Error de carga">-->
+    <!-- <img src="media/pac.png" alt="pacman">-->
+
+  </body>
+
+  </html>
