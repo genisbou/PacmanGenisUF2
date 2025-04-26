@@ -51,12 +51,16 @@
 </head>
 <!--header-->
 <div class="topnav">
+  <a href="home.html">HOME</a>
   <a href="index.html">START GAME</a>
+  <a href="stats.html">MY STATS</a>
+  <a href="data.html">MY DATA</a>
+  <a href="ranking.html">TOP RANKING</a>
   <a href="help.html">HELP</a>
-  <a href="informacio.html">INFORMACIÓ</a>
-  <a href="credits.html">CRÈDITS</a>
+  <!-- <a href="informacio.html">INFORMACIÓ</a>
+  <a href="credits.html">CRÈDITS</a> -->
   <div class="w3-right">
-  <a href="login.html">LOGIN</a>
+  <a href="logout.html">LOGOUT</a>
   </div>
 </div>
 
@@ -67,6 +71,13 @@
   <div id="error-holder"></div>
 <!--<media src="/error.gif" alt="Error de carga">-->
  <!-- <img src="media/pac.png" alt="pacman">-->
+<script>
+  // Comprova si existeix l'usuari connectat
+  if (!localStorage.getItem('usuariConnectat')) {
+    // Si NO hi ha usuari, redirigeix al login
+    window.location.href = 'login.html';
+  }
+</script>
 
 </body>
 </html>

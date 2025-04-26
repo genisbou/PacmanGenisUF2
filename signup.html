@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulari de Registre</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+        body {
+            background-color: aquamarine;
+            font-family: Arial, sans-serif;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="w3-container w3-content w3-center w3-padding-64" style="max-width:600px">
+    <form class="w3-container w3-card-4 w3-white w3-round w3-margin" id="signupForm" onsubmit="return validateForm()">
+        <h2 class="w3-text-teal">Registra't</h2>
+
+        <div class="w3-section">
+            <label>Nom</label>
+            <input class="w3-input w3-border" type="text" id="nom" required>
+            <div class="error-message" id="errorNom">Introdueix el teu nom.</div>
+        </div>
+
+        <div class="w3-section">
+            <label>Cognoms</label>
+            <input class="w3-input w3-border" type="text" id="cognoms" required>
+            <div class="error-message" id="errorCognoms">Introdueix els teus cognoms.</div>
+        </div>
+
+        <div class="w3-section">
+            <label>Contrasenya</label>
+            <input class="w3-input w3-border" type="password" id="password" required>
+            <div class="error-message" id="errorPassword">La contrasenya ha de tenir almenys 6 caràcters.</div>
+        </div>
+
+        <div class="w3-section">
+            <label>Data de naixement</label>
+            <input class="w3-input w3-border" type="date" id="dataNaixement" required>
+            <div class="error-message" id="errorData">Introdueix una data vàlida.</div>
+        </div>
+
+        <div class="w3-section">
+            <label>Correu electrònic</label>
+            <input class="w3-input w3-border" type="email" id="email" required>
+            <div class="error-message" id="errorEmail">Introdueix un correu electrònic vàlid.</div>
+        </div>
+
+        <button class="w3-button w3-block w3-teal w3-section w3-padding" type="submit">Registrar-se</button>
+
+        <div class="w3-center w3-padding-16">
+            <p>Ja tens un compte? <a href="login.html" class="w3-text-blue">Inicia sessió</a></p>
+        </div>
+    </form>
+</div>
+
+<script>
+function validateForm() {
+    let valid = true;
+
+    const nom = document.getElementById("nom");
+    const cognoms = document.getElementById("cognoms");
+    const password = document.getElementById("password");
+    const data = document.getElementById("dataNaixement");
+    const email = document.getElementById("email");
+
+    // Reset errors
+    document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+
+    if (nom.value.trim() === "") {
+        document.getElementById("errorNom").style.display = 'block';
+        valid = false;
+    }
+
+    if (cognoms.value.trim() === "") {
+        document.getElementById("errorCognoms").style.display = 'block';
+        valid = false;
+    }
+
+    if (password.value.length < 6) {
+        document.getElementById("errorPassword").style.display = 'block';
+        valid = false;
+    }
+
+    if (!data.value) {
+        document.getElementById("errorData").style.display = 'block';
+        valid = false;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email.value)) {
+        document.getElementById("errorEmail").style.display = 'block';
+        valid = false;
+    }
+
+    return valid;
+}
+</script>
+
+</body>
+</html>

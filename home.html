@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body class="w3-container w3-center" style="padding-top: 100px;">
+
+<h1>Benvingut/da, <span id="userName"></span>!</h1>
+<p>Tria una opció del menú per començar a jugar o veure les teves dades.</p>
+
+<!--header-->
+<div class="topnav">
+  <a href="home.html">HOME</a>
+  <a href="index.html">START GAME</a>
+  <a href="stats.html">MY STATS</a>
+  <a href="data.html">MY DATA</a>
+  <a href="ranking.html">TOP RANKING</a>
+  <a href="help.html">HELP</a>
+  <!-- <a href="informacio.html">INFORMACIÓ</a>
+  <a href="credits.html">CRÈDITS</a> -->
+  <div class="w3-right">
+  <a href="logout.html">LOGOUT</a>
+  </div>
+</div>
+
+<script>
+// Comprovar sessió
+if (!localStorage.getItem('usuariConnectat')) {
+  window.location.href = 'login.html';
+} else {
+  document.getElementById('userName').textContent = localStorage.getItem('usuariConnectat');
+}
+</script>
+
+</body>
+</html>
