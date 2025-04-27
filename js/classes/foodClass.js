@@ -1,13 +1,16 @@
 /**
  * @type {gameObject}
  */
-import { gameObject } from './gameObject.js';
+import { gameObject } from './gameObjectClass.js';
 
 /**
  * @class Food
  * @extends gameObject
  */
 export class Food extends gameObject {
+
+    // Atributs
+  #pointsFood;
 
   /**
    * Crea una nova instància de Food.
@@ -20,15 +23,22 @@ export class Food extends gameObject {
     /**
      * @type {number} pointsFood - Punts que dóna el menjar
      */
-    this.pointsFood = 10;
+    this.#pointsFood = 10;
+  }
+
+  // Getter
+  get pointsFood() {
+    return this.#pointsFood;
+  }
+
+  // Setter
+  set pointsFood(value) {
+    this.#pointsFood = value;
   }
 
   toString() {
-    /**
-     * Mostra la informació de l'objecte Food
-     */
-    console.log( `Food at row ${this.rowNumber}
+    console.log(`Food at row ${this.rowNumber}
     and column ${this.columnObjectNumber}
-    with ${this.pointsFood} points`);
+    with ${this.#pointsFood} points`);
   }
 }

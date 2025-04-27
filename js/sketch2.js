@@ -9,7 +9,7 @@ const pacman = new Pacman();
 
 //import { Food } from "./classes/food.js";
 import { Food } from "./classes/foodClass.js";
-const food = new Food();
+const food = new Food(5, 5); 
 
 //import { configGame} from "./constants.js";
 import { configGameClass } from "./classes/configGameClass.js";
