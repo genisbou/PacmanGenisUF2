@@ -1,7 +1,11 @@
 import { gameObject } from "./classes/gameObject.js";
 import { Pacman } from "./classes/pacman.js";
 import { Food } from "./classes/food.js";
-import { configGame} from "./constants.js";
+//import { configGame} from "./constants.js";
+import { configGameClass } from "./classes/configGameClass.js";
+
+const configGame = new configGameClass();
+
 import {ErrorPac} from "./classes/errorPac.js";
 import {Powup} from "./classes/powup.js";
 
