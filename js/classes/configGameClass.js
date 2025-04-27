@@ -11,7 +11,7 @@ export class configGame  {
       #HEIGHT_CANVAS;
 
       // Constructor
-      configGameClass(){
+      constructor(){
           this.#ROWS = 10;
           this.#IMAGE_SIZE = 32;
           this.#COLUMNS = 10;
@@ -107,7 +107,7 @@ export class configGame  {
       }
 
       set HEIGHT_CANVAS(value){
-        this.HEIGHT_CANVAS = value;
+        this.#HEIGHT_CANVAS = value;
       }
 
 };
