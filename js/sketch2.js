@@ -1,9 +1,18 @@
-import { gameObject } from "./classes/gameObject.js";
-import { Pacman } from "./classes/pacman.js";
-import { Food } from "./classes/food.js";
+//import { gameObject } from "./classes/gameObject.js";
+import { GameObject } from "./classes/gameObjectClass.js";
+const obj = new GameObject();
+
+
+//import { Pacman } from "./classes/pacman.js";
+import {Pacman} from "./classes/pacmanClass.js"
+const pacman = new Pacman();
+
+//import { Food } from "./classes/food.js";
+import { Food } from "./classes/foodClass.js";
+const food = new Food();
+
 //import { configGame} from "./constants.js";
 import { configGameClass } from "./classes/configGameClass.js";
-
 const configGame = new configGameClass();
 
 import {ErrorPac} from "./classes/errorPac.js";
