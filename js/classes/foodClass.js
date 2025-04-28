@@ -1,13 +1,13 @@
 /**
  * @type {gameObject}
  */
-import { gameObject } from './gameObjectClass.js';
+import { GameObject } from './gameObjectClass.js';
 
 /**
  * @class Food
  * @extends gameObject
  */
-export class Food extends gameObject {
+export class Food extends GameObject {
 
     // Atributs
   #pointsFood;
