@@ -4,7 +4,7 @@
 // /** @class gameObject representa una classe. */
 import { configGame } from "../constants.js"; 
 
-export class gameObject {
+export class GameObject {
 
   /**
    * Creates an instance of gameObject.
