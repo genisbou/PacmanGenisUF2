@@ -9,11 +9,11 @@ const pacman = new Pacman();
 
 //import { Food } from "./classes/food.js";
 import { Food } from "./classes/foodClass.js";
-const food = new Food(5, 5); 
+const food = new Food(5, 5);
 
 //import { configGame} from "./constants.js";
-import { configGameClass } from "./classes/configGameClass.js";
-const configGame = new configGameClass();
+import { ConfigGame } from "./classes/configGameClass.js";
+const configGame = new ConfigGame();
 
 //import {ErrorPac} from "./classes/errorPac.js";
 import { ErrorPac } from "./classes/ErrorPacClass.js";
@@ -21,7 +21,7 @@ const error = new ErrorPac(1, "Tecla no reconeguda");
 
 //import {Powup} from "./classes/powup.js";
 import { Powup } from "./classes/PowupClass.js";
-const powerUp = new Powup(3, 5); 
+const powerUp = new Powup(3, 5);
 
 import { User } from "./classes/UserClass.js";
 const user = new User("user1", "user", "user1", "user1@gmail.com");

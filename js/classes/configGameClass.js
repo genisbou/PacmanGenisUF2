@@ -1,4 +1,4 @@
-export class configGame  {
+export class ConfigGame  {
     // Atributs privats
       #ROWS;
       #IMAGE_SIZE;
@@ -34,44 +34,44 @@ export class configGame  {
           ];
            this.#WIDTH_CANVAS = this.#COLUMNS * this.#IMAGE_SIZE;
           this.#HEIGHT_CANVAS = this.#ROWS * this.#IMAGE_SIZE;
-          
+
       }
 
       // Getters i Setters
-      get ROWS() { 
-        return this.#ROWS; 
+      get ROWS() {
+        return this.#ROWS;
       }
 
-      get COLUMNS() { 
-        return this.#COLUMNS; 
+      get COLUMNS() {
+        return this.#COLUMNS;
       }
 
       get IMAGE_SIZE() {
-         return this.#IMAGE_SIZE; 
+         return this.#IMAGE_SIZE;
         }
 
-      get EXTRA_SIZE_HEIGHT() { 
-        return this.#EXTRA_SIZE_HEIGHT; 
+      get EXTRA_SIZE_HEIGHT() {
+        return this.#EXTRA_SIZE_HEIGHT;
       }
 
-      get SPEED_PACMAN() { 
-        return this.#SPEED_PACMAN; 
+      get SPEED_PACMAN() {
+        return this.#SPEED_PACMAN;
       }
 
-      get LIVES_PACMAN() { 
-        return this.#LIVES_PACMAN; 
+      get LIVES_PACMAN() {
+        return this.#LIVES_PACMAN;
       }
 
-      get map() { 
-        return this.#map; 
+      get map() {
+        return this.#map;
       }
 
-      get WIDTH_CANVAS() { 
-        return this.#WIDTH_CANVAS; 
+      get WIDTH_CANVAS() {
+        return this.#WIDTH_CANVAS;
       }
 
-      get HEIGHT_CANVAS() { 
-        return this.#HEIGHT_CANVAS; 
+      get HEIGHT_CANVAS() {
+        return this.#HEIGHT_CANVAS;
       }
 
       set ROWS(value){
