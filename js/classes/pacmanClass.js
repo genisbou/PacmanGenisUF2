@@ -13,40 +13,41 @@ export class Pacman extends gameObject {
   #pacmanLives;
 
 
-  constructor(row,column){
+  constructor(row, column) {
+    super(row, column); //
+
     this.#directionPacman = 1; // 1 -> right, 2 -> up, 3 -> left, 4 -> down
     this.#speedPacman = configGame.SPEED_PACMAN;
     this.#scorePacman = 0;
     this.#pacmanLives = 3;
-    //this.widthCanvasPacman = 128;
-   // this.pacmanDiameter =32;
   }
+
 
   // Getters i Setters
-  get directionPacman() { 
-    return this.#directionPacman; 
+  get directionPacman() {
+    return this.#directionPacman;
   }
-  get speedPacman() { 
-    return this.#speedPacman; 
+  get speedPacman() {
+    return this.#speedPacman;
   }
-  get scorePacman() { 
-    return this.#scorePacman; 
+  get scorePacman() {
+    return this.#scorePacman;
   }
-  get pacmanLives() { 
-    return this.#pacmanLives; 
+  get pacmanLives() {
+    return this.#pacmanLives;
   }
 
-  set directionPacman(value) { 
-    this.#directionPacman = value; 
+  set directionPacman(value) {
+    this.#directionPacman = value;
   }
-  set speedPacman(value) { 
-    this.#speedPacman = value; 
+  set speedPacman(value) {
+    this.#speedPacman = value;
   }
-  set scorePacman(value) { 
-    this.#scorePacman = value; 
+  set scorePacman(value) {
+    this.#scorePacman = value;
   }
-  set pacmanLives(value) { 
-    this.#pacmanLives = value; 
+  set pacmanLives(value) {
+    this.#pacmanLives = value;
   }
 
   moveRight(){
