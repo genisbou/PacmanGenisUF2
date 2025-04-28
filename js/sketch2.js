@@ -15,8 +15,16 @@ const food = new Food(5, 5);
 import { configGameClass } from "./classes/configGameClass.js";
 const configGame = new configGameClass();
 
-import {ErrorPac} from "./classes/errorPac.js";
-import {Powup} from "./classes/powup.js";
+//import {ErrorPac} from "./classes/errorPac.js";
+import { ErrorPac } from "./classes/ErrorPacClass.js";
+const error = new ErrorPac(1, "Tecla no reconeguda");
+
+//import {Powup} from "./classes/powup.js";
+import { Powup } from "./classes/PowupClass.js";
+const powerUp = new Powup(3, 5); 
+
+import { User } from "./classes/UserClass.js";
+const user = new User("user1", "user", "user1", "user1@gmail.com");
 
 let imgRock;
 let numberImagesLoaded = 0;
@@ -77,7 +85,22 @@ function handleImage() {
 function setup() {
 
   //numberImagesLoaded = 5; i numberErrorLoadedSounds = 1;
-  createCanvas(configGame.WIDTH_CANVAS, configGame.HEIGHT_CANVAS + configGame.EXTRA_SIZE_HEIGHT).parent("sketch-pacman");
+  try {
+  if (configGame.WIDTH_CANVAS % configGame.IMAGE_SIZE !== 0 || configGame.HEIGHT_CANVAS % configGame.IMAGE_SIZE !== 0) {
+    throw new ErrorPac(30, "Les dimensions del canvas no són múltiples de IMAGE_SIZE.");
+  }
+
+  const canvas = createCanvas(configGame.WIDTH_CANVAS, configGame.HEIGHT_CANVAS + configGame.EXTRA_SIZE_HEIGHT);
+  if (!document.getElementById("sketch-pacman")) {
+    throw new ErrorPac(31, "No existeix el div sketch-pacman.");
+  }
+  canvas.parent("sketch-pacman");
+
+} catch (error) {
+  console.error(error.toString());
+  showError();
+}
+
   for (let filaActual = 0; filaActual < configGame.ROWS; filaActual++) {
     for (let columnaActual = 0; columnaActual < configGame.COLUMNS; columnaActual++) {
       if (configGame.map[filaActual][columnaActual] === 1) {
@@ -268,7 +291,8 @@ function showError(){
   let errorImage = new ErrorPac(105, "Error 2loading image");
   errorImage.toString();
   const parent = document.getElementById("error-holder");
-  const node = document.createElement("media");
+  const node = document.createElement("img");
+
   node.setAttribute("src", "./media/tristesa.webp");
   node.setAttribute("alt", "Imatge Error");
   node.setAttribute("width", 300);
