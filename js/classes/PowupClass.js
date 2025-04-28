@@ -1,4 +1,4 @@
-import { gameObject } from './gameObjectClass.js';
+import { GameObject } from './gameObjectClass.js';
 
 /**
  * @type {gameObject}
@@ -9,7 +9,7 @@ import { gameObject } from './gameObjectClass.js';
  * @class Powup
  * @extends gameObject
  */
-export class Powup extends gameObject {
+export class Powup extends GameObject {
 
     // Atributs
      #enabledPowerup;
