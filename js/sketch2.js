@@ -1,11 +1,10 @@
-//import { gameObject } from "./classes/gameObject.js";
-import { GameObject } from "./classes/gameObjectClass.js";
-const obj = new GameObject();
-
+//import { GameObject } from "./classes/GameObject.js";
+import { GameObject } from "./classes/GameObjectClass.js";
+const obj = new GameObject(0, 0);
 
 //import { Pacman } from "./classes/pacman.js";
 import {Pacman} from "./classes/pacmanClass.js"
-const pacman = new Pacman();
+const pacman = new Pacman(7,7);
 
 //import { Food } from "./classes/food.js";
 import { Food } from "./classes/foodClass.js";
@@ -102,9 +101,10 @@ function setup() {
 }
 
   for (let filaActual = 0; filaActual < configGame.ROWS; filaActual++) {
-    for (let columnaActual = 0; columnaActual < configGame.COLUMNS; columnaActual++) {
+    for (let columnaActual = 0; columnaActual <
+    configGame.COLUMNS; columnaActual++) {
       if (configGame.map[filaActual][columnaActual] === 1) {
-        const roca = new gameObject(filaActual, columnaActual);
+        const roca = new GameObject(filaActual, columnaActual);
        // console.log("\n he creat una roca a posicio: fila -> " + filaActual + " columna -> " + columnaActual);
         arrRocks.push(roca);
       }
@@ -313,7 +313,7 @@ function testFinishGame(){
     for (let filaActual = 0; filaActual < configGame.ROWS; filaActual++) {
       for (let columnaActual = 0; columnaActual < configGame.COLUMNS; columnaActual++) {
         if (configGame.map[filaActual][columnaActual] === 1) {
-          const roca = new gameObject(filaActual, columnaActual);
+          const roca = new GameObject(filaActual, columnaActual);
           arrRocks.push(roca);
         }
         else if (configGame.map[filaActual][columnaActual] === 2) {
