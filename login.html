@@ -1,82 +1,75 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <style>
-        body {
-            background-color: aquamarine;
-            font-family: Arial, sans-serif;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <style>
+    body {
+      background-color: aquamarine;
+      font-family: Arial, sans-serif;
+    }
+  </style>
 </head>
 <body>
 
 <!-- Container (Login Section) -->
 <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:500px">
-    <form id="loginForm" class="w3-container w3-card-4 w3-white w3-round w3-margin">
-        <div class="w3-section">
-            <label>Usuari</label>
-            <input id="username" class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Nom d'usuari" required>
-        </div>
-        <div class="w3-section">
-            <label>Contrasenya</label>
-            <input id="password" class="w3-input w3-border" type="password" placeholder="Contrasenya" required>
-        </div>
-        <button class="w3-button w3-block w3-green w3-section w3-padding" type="submit">Entrar</button>
+  <form id="loginForm" class="w3-container w3-card-4 w3-white w3-round w3-margin">
+    <div class="w3-section">
+      <label>Usuari</label>
+      <input id="username" class="w3-input w3-border w3-margin-bottom" type="text" placeholder="Nom d'usuari" required>
+    </div>
+    <div class="w3-section">
+      <label>Contrasenya</label>
+      <input id="password" class="w3-input w3-border" type="password" placeholder="Contrasenya" required>
+    </div>
+    <button class="w3-button w3-block w3-green w3-section w3-padding" type="submit">Entrar</button>
 
-        <div class="w3-center w3-padding-16">
-            <p>No tens compte? <a href="signup.html" class="w3-text-blue">Registra't</a></p>
-        </div>
-    </form>
+    <div class="w3-center w3-padding-16">
+      <p>No tens compte? <a href="signup.html" class="w3-text-blue">Registra't</a></p>
+    </div>
+  </form>
 </div>
 
 <script>
-// Crear 3 usuaris simulats 
-if (typeof window !== 'undefined') {
-    if (!localStorage.getItem('usuari1')) {
-        const usuari1 = {
-            nom: "anna",
-            contrasena: "1234"
-        };
-        const usuari2 = {
-            nom: "marc",
-            contrasena: "abcd"
-        };
-        const usuari3 = {
-            nom: "julia",
-            contrasena: "pass"
-        };
-        localStorage.setItem('usuari1', JSON.stringify(usuari1));
-        localStorage.setItem('usuari2', JSON.stringify(usuari2));
-        localStorage.setItem('usuari3', JSON.stringify(usuari3));
-    }
-}
-
-// Comprovar login
-document.getElementById('loginForm').addEventListener('submit', function(event) {
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
     const usernameInput = document.getElementById('username').value;
     const passwordInput = document.getElementById('password').value;
 
-    const usuari1 = JSON.parse(localStorage.getItem('usuari1'));
-    const usuari2 = JSON.parse(localStorage.getItem('usuari2'));
-    const usuari3 = JSON.parse(localStorage.getItem('usuari3'));
+    // Crida a la API
+    fetch('http://localhost/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        nom_usuari: usernameInput,
+        password_usuari: passwordInput
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data); // Debug
 
-    if ((usuari1 && usernameInput === usuari1.nom && passwordInput === usuari1.contrasena) ||
-        (usuari2 && usernameInput === usuari2.nom && passwordInput === usuari2.contrasena) ||
-        (usuari3 && usernameInput === usuari3.nom && passwordInput === usuari3.contrasena)) {
-        
-        // Si login correcte
-        localStorage.setItem('usuariConnectat', usernameInput);
-        window.location.href = 'dashboard.html';
-    } else {
-        // Si login incorrecte
-        alert('Usuari o contrasenya incorrectes');
-    }
-});
+        if (data.status === 200 && data.token) {
+          // Guardem token i nom d'usuari
+          localStorage.setItem('jwt_token', data.token);
+          localStorage.setItem('usuariConnectat', usernameInput);
+
+          // Redirigim al dashboard
+          window.location.href = 'dashboard.html';
+        } else {
+          alert('Usuari o contrasenya incorrectes');
+        }
+      })
+      .catch(error => {
+        console.error('Error en la crida a l API:', error);
+        alert('Error en la connexió');
+      });
+  });
 </script>
 
 </body>
