@@ -38,6 +38,8 @@
         <a href="stats.html">MY STATS</a>
         <a href="data.html">MY DATA</a>
         <a href="ranking.html">TOP RANKING</a>
+        <a href="LastGames.html">LAST GAMES</a>
+        <a href="account.html">MY ACCOUNT</a>
         <a href="help.html">HELP</a>
         <!-- <a href="informacio.html">INFORMACIÓ</a>
         <a href="credits.html">CRÈDITS</a> -->
@@ -69,55 +71,41 @@
 </table>
 
 <script>
-// Comprovar si està loguejat
-if (!localStorage.getItem('usuariConnectat')) {
-  window.location.href = 'login.html';
-}
+async function carregarRanking() {
+    const numPlayers = document.getElementById('numPlayers').value;
 
-// Array de jugadors simulats
-const users = [];
-for (let i = 1; i <= 30; i++) {
-  users.push({
-    posicio: i,
-    name: 'Jugador' + i,
-    points: Math.floor(Math.random() * 10000)
-  });
-}
+    try {
+        const response = await fetch('http://localhost/api/get_top_users');
+        if (!response.ok) throw new Error('Error ' + response.status);
 
-function mostrarRanking(num) {
-  const table = document.getElementById('rankingTable');
-  table.innerHTML = '';
+        const result = await response.json();
+        console.log(result);
 
-  const seleccionats = users.slice(0, num);
+        const users = result.jugadors.slice(0, numPlayers);
 
-  seleccionats.forEach(user => {
-    table.innerHTML += `
-      <tr>
-        <td>${user.posicio}</td>
-        <td>${user.name}</td>
-        <td>${user.points}</td>
-      </tr>
-    `;
-  });
-}
+        const table = document.getElementById('rankingTable');
+        table.innerHTML = '';
 
-document.getElementById('numPlayers').addEventListener('change', function() {
-  mostrarRanking(this.value);
-});
-
-function ordenarPer(camp) {
-  users.sort((a, b) => {
-    if (camp === 'name') {
-      return a.name.localeCompare(b.name);
-    } else {
-      return a[camp] - b[camp];
+        users.forEach(user => {
+            table.innerHTML += `
+                <tr>
+                    <td>${user.posicio}</td>
+                    <td>${user.nom_usuari}</td>
+                    <td>${user.punts_totals}</td>
+                </tr>
+            `;
+        });
+    } catch (error) {
+        console.error('Error carregant ranking:', error);
+        alert('Error carregant ranking: ' + error.message);
     }
-  });
-  mostrarRanking(document.getElementById('numPlayers').value);
 }
+
+document.getElementById('numPlayers').addEventListener('change', carregarRanking);
 
 // Inicial
-mostrarRanking(30);
+carregarRanking();
+
 </script>
     </div>
 

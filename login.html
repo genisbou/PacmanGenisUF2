@@ -56,7 +56,7 @@
 
         if (data.status === 200 && data.token) {
           // Guardem token i nom d'usuari
-          localStorage.setItem('jwt_token', data.token);
+         localStorage.setItem('jwtToken', data.token);
           localStorage.setItem('usuariConnectat', usernameInput);
 
           // Redirigim al dashboard

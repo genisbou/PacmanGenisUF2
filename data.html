@@ -1,100 +1,214 @@
-  <!doctype html>
-  <html class="no-js" lang="">
+<!doctype html>
+<html lang="en">
 
-  <head>
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Instruccions</title>
+    <title>Les Meves Dades</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="css/style.css">
-    <meta name="description" content="">
+</head>
 
-    <meta property="og:title" content="">
-    <meta property="og:type" content="">
-    <meta property="og:url" content="">
-    <meta property="og:image" content="">
-    <meta property="og:image:alt" content="">
-
-    <link rel="icon" href="/favicon.ico" sizes="any">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="icon.png">
-
-    <link rel="manifest" href="site.webmanifest">
-    <meta name="theme-color" content="#fafafa">
-    <!-- Place favicon.ico in the root directory -->
-    <script src="js/libraries/p5.min.js" type="module"></script>
-    <script src="js/libraries/addons/p5.sound.js" type="module"></script>
-    <script src="js/sketch2.js" type="module"></script>
-    <style>
-
-
-    </style>
-  </head>
-  <!--header-->
-  <body>
+<body>
     <div class="topnav">
         <a href="home.html">HOME</a>
         <a href="index.html">START GAME</a>
         <a href="stats.html">MY STATS</a>
         <a href="data.html">MY DATA</a>
         <a href="ranking.html">TOP RANKING</a>
+                <a href="LastGames.html">LAST GAMES</a>
+        <a href="account.html">MY ACCOUNT</a>
         <a href="help.html">HELP</a>
-        <!-- <a href="informacio.html">INFORMACIÓ</a>
-        <a href="credits.html">CRÈDITS</a> -->
         <div class="w3-right">
-        <a href="logout.html">LOGOUT</a>
-    </div>
+            <a href="logout.html">LOGOUT</a>
+        </div>
     </div>
 
     <div class="w3-container w3-left">
-        
-<h2>Les Meves Dades</h2>
 
-<table class="w3-table-all w3-hoverable">
-  <thead>
-    <tr>
-      <th>Nom</th>
-      <th>Tema</th>
-      <th>Música</th>
-      <th>Dificultat</th>
-    </tr>
-  </thead>
-  <tbody id="dataTable">
-  </tbody>
-</table>
+        <h2>Les Meves Dades</h2>
 
-<script>
-// Comprovar si està loguejat
-if (!localStorage.getItem('usuariConnectat')) {
-  window.location.href = 'login.html';
-}
+        <table class="w3-table-all w3-hoverable">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Tema</th>
+                    <th>Música</th>
+                    <th>Dificultat</th>
+                    <th>Accions</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable">
+            </tbody>
+        </table>
 
-// Dades simulades
-const dadesUsuari = {
-  nom: localStorage.getItem('usuariConnectat'),
-  tema: 'Fosc',
-  musica: 'Clàssica',
-  dificultat: 'Mitja'
-};
+        <!-- Formulari de configuració -->
+        <h3>Configura el Joc</h3>
+        <form id="configForm" class="w3-container w3-card w3-padding w3-margin-top">
+            <label>Tema:</label>
+            <select id="tema" class="w3-select">
+                <option value="light">Clar</option>
+                <option value="dark">Fosc</option>
+            </select>
 
-// Mostrar dades a la taula
-document.getElementById('dataTable').innerHTML = `
-  <tr>
-    <td>${dadesUsuari.nom}</td>
-    <td>${dadesUsuari.tema}</td>
-    <td>${dadesUsuari.musica}</td>
-    <td>${dadesUsuari.dificultat}</td>
-  </tr>
-`;
+            <label>Música:</label>
+            <select id="musica" class="w3-select">
+                <option value="hardstyle">Hardstyle</option>
+                <option value="pop">Pop</option>
+                <option value="rock">Rock</option>
+            </select>
+
+            <label>Dificultat:</label>
+            <select id="dificultat" class="w3-select">
+                <option value="easy">Fàcil</option>
+                <option value="medium">Mitja</option>
+                <option value="hard">Difícil</option>
+            </select>
+
+            <button type="submit" class="w3-button w3-teal w3-margin-top">Guardar Configuració</button>
+        </form>
+
+       <script>
+    // Comprovar si està loguejat
+    if (!localStorage.getItem('usuariConnectat')) {
+        window.location.href = 'login.html';
+    }
+
+    const token = localStorage.getItem('jwtToken');
+
+    // Variables globals
+    let teConfig = false;
+    let editant = false;
+
+    // Funció per carregar la configuració actual
+    function carregarConfiguracio() {
+        fetch('http://localhost/api/config_game', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Resposta no OK: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(result => {
+            console.log('Configuració actual:', result);
+            if (result.status === 'ok' && result.data) {
+                teConfig = true; // Ja hi ha config
+                const config = result.data;
+
+                // Mostrar a la taula
+                document.getElementById('dataTable').innerHTML = `
+                    <tr>
+                        <td>${localStorage.getItem('usuariConnectat')}</td>
+                        <td>${config.tema}</td>
+                        <td>${config.musica}</td>
+                        <td>${config.dificultat}</td>
+                        <td>
+                            <button onclick="editarConfiguracio()" class="w3-button w3-small w3-blue">✏️ Edita</button>
+                        </td>
+                    </tr>
+                `;
+
+                // Omplir el formulari
+                document.getElementById('tema').value = config.tema;
+                document.getElementById('musica').value = config.musica;
+                document.getElementById('dificultat').value = config.dificultat;
+            } else {
+                // No hi ha config
+                teConfig = false;
+                document.getElementById('dataTable').innerHTML = `
+                    <tr>
+                        <td>${localStorage.getItem('usuariConnectat')}</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>
+                            <button onclick="afegirConfiguracio()" class="w3-button w3-small w3-green">➕ Afegir</button>
+                        </td>
+                    </tr>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error('Error en la crida:', error);
+            alert('Error en la crida: ' + error.message);
+        });
+    }
+
+    // Carregar la configuració en iniciar
+    carregarConfiguracio();
+
+    // Funció quan fem click a "Editar"
+    function editarConfiguracio() {
+        editant = true;
+        document.getElementById('configForm').scrollIntoView();
+        document.querySelector('#configForm button[type="submit"]').innerText = 'Actualitzar Configuració';
+    }
+
+    // Funció quan fem click a "Afegir"
+    function afegirConfiguracio() {
+        editant = false;
+        document.getElementById('configForm').scrollIntoView();
+        document.querySelector('#configForm button[type="submit"]').innerText = 'Guardar Configuració';
+    }
+
+    // Enviar configuració
+    document.getElementById('configForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const tema = document.getElementById('tema').value;
+        const musica = document.getElementById('musica').value;
+        const dificultat = document.getElementById('dificultat').value;
+
+        // Decideix URL i mètode
+        const url = editant
+            ? 'http://localhost/api/update_config_game'
+            : 'http://localhost/api/config_game';
+        const method = editant ? 'PUT' : 'POST';
+
+        fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ tema, musica, dificultat })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Resposta no OK: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(result => {
+            console.log('Resposta API:', result);
+
+            if (result.status === 'ok') {
+                alert(editant ? 'Configuració actualitzada correctament' : 'Configuració desada correctament');
+                // Tornar a carregar la configuració per refrescar la taula
+                carregarConfiguracio();
+
+                // Reset a mode "Afegir" després de guardar
+                editant = false;
+                document.querySelector('#configForm button[type="submit"]').innerText = 'Guardar Configuració';
+            } else if (result.message) {
+                alert('Error: ' + result.message);
+            } else {
+                alert('Error desconegut');
+            }
+        })
+        .catch(error => {
+            console.error('Error en la crida:', error);
+            alert('Error en la crida: ' + error.message);
+        });
+    });
 </script>
+
+
     </div>
-
-    <!-- Add your site or application content here -->
-    <!--<div id="sketch-pacman"></div>-->
-    <!--<div id="error-holder"></div>-->
-    <!--<media src="/error.gif" alt="Error de carga">-->
-    <!-- <img src="media/pac.png" alt="pacman">-->
-
-  </body>
-
-  </html>
+</body>
+</html>

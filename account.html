@@ -1,0 +1,116 @@
+  <!doctype html>
+  <html class="no-js" lang="">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Instruccions</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="">
+
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:image:alt" content="">
+
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icon.png">
+
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#fafafa">
+    <!-- Place favicon.ico in the root directory -->
+    <script src="js/libraries/p5.min.js" type="module"></script>
+    <script src="js/libraries/addons/p5.sound.js" type="module"></script>
+    <script src="js/sketch2.js" type="module"></script>
+    <style>
+
+
+    </style>
+  </head>
+  <!--header-->
+  <body>
+    <div class="topnav">
+        <a href="home.html">HOME</a>
+        <a href="index.html">START GAME</a>
+        <a href="stats.html">MY STATS</a>
+        <a href="data.html">MY DATA</a>
+        <a href="ranking.html">TOP RANKING</a>
+        <a href="LastGames.html">LAST GAMES</a>
+        <a href="account.html">MY ACCOUNT</a>
+        <a href="help.html">HELP</a>
+        <!-- <a href="informacio.html">INFORMACIÓ</a>
+        <a href="credits.html">CRÈDITS</a> -->
+        <div class="w3-right">
+        <a href="logout.html">LOGOUT</a>
+    </div>
+    </div>
+
+    <div class="w3-container w3-left">
+  <h2>My account</h2>
+
+  <form id="updateUserForm" class="w3-container w3-card-4 w3-padding" style="max-width:400px;">
+    <label for="mail"><b>Email</b></label>
+    <input class="w3-input w3-border" type="email" id="mail" name="mail" required>
+
+    <label for="pais" style="margin-top:12px;"><b>País</b></label>
+    <input class="w3-input w3-border" type="text" id="pais" name="pais" required>
+
+    <button type="submit" class="w3-button w3-blue w3-margin-top">Actualitzar</button>
+  </form>
+
+  <div id="responseMsg" style="margin-top:20px;"></div>
+</div>
+
+<script>
+  const token = localStorage.getItem('jwtToken');
+  if (!token) {
+    window.location.href = 'login.html';
+  }
+
+  // Opcional: carregar dades usuari per omplir formulari (si tens API per això)
+  // Aquí suposo que no, així que deixo els camps buits
+
+  const form = document.getElementById('updateUserForm');
+  const responseMsg = document.getElementById('responseMsg');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const mail = form.mail.value.trim();
+    const pais = form.pais.value.trim();
+
+    if (!mail || !pais) {
+      responseMsg.innerHTML = '<span style="color:red;">Omple tots els camps</span>';
+      return;
+    }
+
+    try {
+      const res = await fetch('http://localhost/api/update_user', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ mail, pais })
+      });
+
+      const data = await res.json();
+
+      if (res.status === 200 && data.status === 'ok') {
+        responseMsg.innerHTML = '<span style="color:green;">' + data.message + '</span>';
+      } else {
+        responseMsg.innerHTML = '<span style="color:red;">' + (data.message || 'Error actualitzant') + '</span>';
+      }
+    } catch (error) {
+      responseMsg.innerHTML = '<span style="color:red;">Error de connexió</span>';
+      console.error(error);
+    }
+  });
+</script>
+
+  </body>
+
+  </html>

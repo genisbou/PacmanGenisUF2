@@ -19,37 +19,35 @@
 <body>
 
 <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:600px">
-    <form class="w3-container w3-card-4 w3-white w3-round w3-margin" id="signupForm" onsubmit="return validateForm()">
+    <form class="w3-container w3-card-4 w3-white w3-round w3-margin" id="signupForm" onsubmit="return sendRegister(event)">
         <h2 class="w3-text-teal">Registra't</h2>
 
         <div class="w3-section">
             <label>Nom</label>
-            <input class="w3-input w3-border" type="text" id="nom" required>
+            <input type="text" id="nom_usuari" name="nom_usuari" required>
             <div class="error-message" id="errorNom">Introdueix el teu nom.</div>
         </div>
 
         <div class="w3-section">
-            <label>Cognoms</label>
-            <input class="w3-input w3-border" type="text" id="cognoms" required>
-            <div class="error-message" id="errorCognoms">Introdueix els teus cognoms.</div>
-        </div>
-
-        <div class="w3-section">
             <label>Contrasenya</label>
-            <input class="w3-input w3-border" type="password" id="password" required>
+            <input type="password" id="password_usuari" name="password_usuari" required>
             <div class="error-message" id="errorPassword">La contrasenya ha de tenir almenys 6 caràcters.</div>
         </div>
 
         <div class="w3-section">
-            <label>Data de naixement</label>
-            <input class="w3-input w3-border" type="date" id="dataNaixement" required>
-            <div class="error-message" id="errorData">Introdueix una data vàlida.</div>
+            <label>Edat</label>
+            <input type="text" id="edat" name="edat" required>
         </div>
 
         <div class="w3-section">
             <label>Correu electrònic</label>
-            <input class="w3-input w3-border" type="email" id="email" required>
+            <input class="w3-input w3-border" type="email" id="mail" name="mail" required>
             <div class="error-message" id="errorEmail">Introdueix un correu electrònic vàlid.</div>
+        </div>
+
+        <div class="w3-section">
+            <label>País</label>
+            <input type="text" id="pais" name="pais" required>
         </div>
 
         <button class="w3-button w3-block w3-teal w3-section w3-padding" type="submit">Registrar-se</button>
@@ -64,11 +62,10 @@
 function validateForm() {
     let valid = true;
 
-    const nom = document.getElementById("nom");
-    const cognoms = document.getElementById("cognoms");
-    const password = document.getElementById("password");
-    const data = document.getElementById("dataNaixement");
-    const email = document.getElementById("email");
+    const nom = document.getElementById("nom_usuari");
+    const password = document.getElementById("password_usuari");
+    const edat = document.getElementById("edat");
+    const email = document.getElementById("mail");
 
     // Reset errors
     document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
@@ -78,28 +75,64 @@ function validateForm() {
         valid = false;
     }
 
-    if (cognoms.value.trim() === "") {
-        document.getElementById("errorCognoms").style.display = 'block';
-        valid = false;
-    }
-
     if (password.value.length < 6) {
         document.getElementById("errorPassword").style.display = 'block';
         valid = false;
     }
 
-    if (!data.value) {
-        document.getElementById("errorData").style.display = 'block';
+    if (isNaN(parseInt(edat.value)) || parseInt(edat.value) <= 0) {
+        alert('L\'edat ha de ser un número positiu.');
         valid = false;
     }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(email.value)) {
+    if (!emailPattern.test(email.value)) {  // <-- aquí el canvi
         document.getElementById("errorEmail").style.display = 'block';
         valid = false;
     }
 
     return valid;
+}
+
+
+async function sendRegister(event) {
+    event.preventDefault(); // Atura el submit per defecte
+
+    if (!validateForm()) {
+        return; // Si no és vàlid, no enviïs res
+    }
+
+    const data = {
+        nom_usuari: document.getElementById('nom_usuari').value,
+        password_usuari: document.getElementById('password_usuari').value,
+        mail: document.getElementById('mail').value,
+        edat: document.getElementById('edat').value,
+        pais: document.getElementById('pais').value
+    };
+
+    try {
+        const response = await fetch('http://localhost/api/create_user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        console.log(result); // Debug
+
+        if (response.ok && result.status === 201) {
+            alert('Usuari creat correctament!');
+            // Pots redirigir a login si vols
+            window.location.href = 'login.html';
+        } else {
+            alert('Error en el registre: ' + JSON.stringify(result));
+        }
+    } catch (error) {
+        console.error('Error en la crida a l\'API:', error);
+        alert('Error de xarxa: ' + error.message);
+    }
 }
 </script>
 

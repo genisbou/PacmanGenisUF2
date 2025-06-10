@@ -38,7 +38,7 @@
         <a href="stats.html">MY STATS</a>
         <a href="data.html">MY DATA</a>
         <a href="ranking.html">TOP RANKING</a>
-                <a href="LastGames.html">LAST GAMES</a>
+        <a href="LastGames.html">LAST GAMES</a>
         <a href="account.html">MY ACCOUNT</a>
         <a href="help.html">HELP</a>
         <!-- <a href="informacio.html">INFORMACIÓ</a>
@@ -49,66 +49,22 @@
     </div>
 
     <div class="w3-container w3-left">
-       <h2>Les Meves Estadístiques</h2>
+       <h2>Last Games</h2>
+        <table class="w3-table-all w3-hoverable w3-margin-top">
+            <thead>
+                <tr>
+                <th>Data</th>
+                <th>Guanyat</th>
+                <th>Punts</th>
+                <th>Durada (s)</th>
+                </tr>
+            </thead>
+            <tbody id="lastGamesTable">
+                <!-- Last games data will be populated here -->
+            </tbody>
+        </table>
 
-<table class="w3-table-all w3-hoverable">
-  <thead>
-    <tr>
-      <th>Partides Totals</th>
-      <th>Guanyades</th>
-      <th>Perdudes</th>
-      <th>Punts Aconseguits</th>
-    </tr>
-  </thead>
-  <tbody id="statsTable">
-  </tbody>
-</table>
-
-<script>
-// Comprovar si està loguejat
-if (!localStorage.getItem('usuariConnectat')) {
-  window.location.href = 'login.html';
-}
-
-// Obtenir token
-const token = localStorage.getItem('jwtToken');
-
-fetch('http://localhost/api/get_user_stats', {
-  method: 'GET',
-  headers: {
-    'Authorization': 'Bearer ' + token
-  }
-})
-  .then(response => response.json())
-  .then(data => {
-    console.log(data); // Debug per veure què retorna
-
-    if (data.status === 200) {
-      // Mostrar les estadístiques reals
-      document.getElementById('statsTable').innerHTML = `
-        <tr>
-          <td>${data.total}</td>
-          <td>${data.guanyades}</td>
-          <td>${data.perdudes}</td>
-          <td>${data.mitjana_punts}</td>
-        </tr>
-      `;
-    } else {
-      alert('Error en obtenir les estadístiques: ' + data.message);
-    }
-  })
-  .catch(error => {
-    console.error('Error en la crida a l\'API:', error);
-    alert('Error en obtenir les estadístiques: ' + error.message);
-  });
-
-
-
-// Crida la funció quan es carregui la pàgina
-getUserStats();
-</script>
-
-
+    
     </div>
 
     <!-- Add your site or application content here -->
@@ -116,6 +72,51 @@ getUserStats();
     <!--<div id="error-holder"></div>-->
     <!--<media src="/error.gif" alt="Error de carga">-->
     <!-- <img src="media/pac.png" alt="pacman">-->
+
+    <script>
+
+  // Obtenir token
+const token = localStorage.getItem('jwtToken');
+
+  if (!token) {
+    window.location.href = 'login.html';
+  }
+
+  async function carregarLastGames() {
+    try {
+      const response = await fetch('http://localhost/api/get_user_last_games', {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      if (!response.ok) throw new Error('Error ' + response.status);
+
+      const result = await response.json();
+      if (result.status !== 'ok') throw new Error('Error de resposta API');
+
+      const partides = result.partides;
+
+      const table = document.getElementById('lastGamesTable');
+      table.innerHTML = '';
+
+      partides.forEach(p => {
+        table.innerHTML += `
+          <tr>
+            <td>${new Date(p.data).toLocaleString()}</td>
+            <td>${p.guanyat ? 'Sí' : 'No'}</td>
+            <td>${p.punts}</td>
+            <td>${p.durada}</td>
+          </tr>
+        `;
+      });
+    } catch (error) {
+      console.error('Error carregant les últimes partides:', error);
+      alert('Error carregant les últimes partides: ' + error.message);
+    }
+  }
+
+  carregarLastGames();
+</script>
 
   </body>
 
