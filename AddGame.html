@@ -1,0 +1,140 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add Game</title>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <div class="topnav">
+    <a href="home.html">HOME</a>
+    <a href="index.html">START GAME</a>
+    <a href="stats.html">MY STATS</a>
+    <a href="data.html">MY DATA</a>
+    <a href="ranking.html">TOP RANKING</a>
+    <a href="LastGames.html">LAST GAMES</a>
+    <a href="addGame.html">ADD GAME</a>
+    <a href="account.html">MY ACCOUNT</a>
+    <a href="help.html">HELP</a>
+    <div class="w3-right">
+      <a href="logout.html">LOGOUT</a>
+    </div>
+  </div>
+
+  <div class="w3-container w3-left" style="max-width: 500px;">
+    <h2>Add Game</h2>
+
+   <form id="addGameForm" class="w3-container w3-card-4 w3-padding">
+  <label for="data"><b>Data</b></label>
+  <input
+    class="w3-input w3-border"
+    type="datetime-local"
+    id="data"
+    name="data"
+    required
+  />
+
+  <label for="guanyat" style="margin-top: 12px"><b>Guanyat</b></label>
+  <select class="w3-select w3-border" id="guanyat" name="guanyat" required>
+    <option value="" disabled selected>Selecciona</option>
+    <option value="true">Sí</option>
+    <option value="false">No</option>
+  </select>
+
+  <label for="punts" style="margin-top: 12px"><b>Punts</b></label>
+  <input
+    class="w3-input w3-border"
+    type="number"
+    id="punts"
+    name="punts"
+    min="0"
+    required
+  />
+
+  <label for="durada" style="margin-top: 12px"><b>Durada (segons)</b></label>
+  <input
+    class="w3-input w3-border"
+    type="number"
+    id="durada"
+    name="durada"
+    min="1"
+    required
+  />
+
+  <button type="submit" class="w3-button w3-blue w3-margin-top">
+    Afegir Partida
+  </button>
+</form>
+
+<div id="responseMsg" style="margin-top: 20px; font-weight: bold;"></div>
+
+<script>
+  const token = localStorage.getItem('jwtToken');
+  if (!token) {
+    window.location.href = 'login.html';
+  }
+
+  const form = document.getElementById('addGameForm');
+  const responseMsg = document.getElementById('responseMsg');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const dataInput = form.data.value;
+    const guanyatInput = form.guanyat.value;
+    const puntsInput = form.punts.value;
+    const duradaInput = form.durada.value;
+
+    if (!dataInput || !guanyatInput || !puntsInput || !duradaInput) {
+      responseMsg.style.color = 'red';
+      responseMsg.textContent = 'Omple tots els camps.';
+      return;
+    }
+
+    const guanyatBool = guanyatInput === 'true';
+
+    const payload = {
+      data: new Date(dataInput).toISOString().slice(0, 19).replace('T', ' '),
+      guanyat: guanyatBool,
+      punts: parseInt(puntsInput),
+      durada: parseInt(duradaInput),
+    };
+
+    try {
+      const res = await fetch('http://localhost/api/add_game', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (res.status === 201 && data.status === 'ok') {
+        responseMsg.style.color = 'green';
+        responseMsg.textContent = data.message || 'Partida registrada correctament.';
+        form.reset();
+      } else if (res.status === 401) {
+        responseMsg.style.color = 'red';
+        responseMsg.textContent = 'Token no vàlid o sessió expirada. Torna a iniciar sessió.';
+        setTimeout(() => window.location.href = 'login.html', 2000);
+      } else {
+        responseMsg.style.color = 'red';
+        responseMsg.textContent = data.message || 'Error afegint la partida.';
+      }
+    } catch (error) {
+      responseMsg.style.color = 'red';
+      responseMsg.textContent = 'Error de connexió.';
+      console.error(error);
+    }
+  });
+</script>
+</body>
+
+</html>
